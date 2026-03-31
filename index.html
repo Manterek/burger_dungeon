@@ -1,0 +1,212 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Burger Dungeon</title>
+<link rel="icon" type="image/png" href="sprites/indicators/burger_menu.png">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="startScreen" class="start-screen">
+  <div id="startBurgerField" class="start-burger-field" aria-hidden="true"></div>
+  <div class="start-screen-vignette" aria-hidden="true"></div>
+  <div id="startAscendOverlay" class="start-ascend-overlay" aria-live="polite" aria-hidden="true">
+    <div class="start-ascend-text">Ascending...</div>
+  </div>
+  <div class="start-panel">
+    <div class="start-header">
+      <h1 id="startTitle">BURGER DUNGEON</h1>
+    </div>
+    <div id="startMenuShell" class="start-menu-shell">
+      <div id="startModeActions" class="start-actions">
+        <button id="startPrimary" type="button">Singleplayer</button>
+        <button id="startSecondary" type="button">Multiplayer</button>
+        <div id="startSettingsWrap" class="start-settings-wrap">
+          <button id="startSettingsToggle" class="start-settings-toggle" type="button" aria-expanded="false" aria-controls="startSettingsPanel">Settings</button>
+          <div id="startSettingsPanel" class="start-settings-panel hidden">
+            <div class="start-settings-head">
+              <div id="startSettingsTitle" class="start-settings-title">Settings</div>
+            </div>
+            <label class="start-settings-slider" for="startMusicVolume">
+              <span id="startMusicVolumeLabel" class="start-settings-slider-label">Music: 100%</span>
+              <input id="startMusicVolume" class="start-settings-slider-input" type="range" min="0" max="100" step="1" value="100">
+            </label>
+            <button id="startLanguageToggle" class="start-settings-option" type="button">Language: EN</button>
+            <button id="startDeveloperModeToggle" class="start-settings-option" type="button">DEV MODE: Off</button>
+          </div>
+        </div>
+        <button id="startTertiary" type="button" class="hidden"></button>
+      </div>
+      <div id="startInfoPanel" class="start-info-panel hidden">
+        <div class="start-info-head">
+          <h2 id="startInfoName"></h2>
+        </div>
+        <div id="startInfoBody" class="start-info-body"></div>
+      </div>
+      <div id="startCharacterStage" class="start-character-stage hidden">
+        <div id="startPartySwitch" class="start-party-switch hidden">
+          <button id="startPartyDuo" type="button">Duo</button>
+          <button id="startPartyTrio" type="button">Trio</button>
+        </div>
+        <div id="startCharacterGrid" class="start-character-grid"></div>
+        <div id="startSelectionActions" class="start-selection-actions">
+          <button id="startBack" type="button">Back</button>
+          <button id="startPartyCancel" type="button" class="hidden">Cancel</button>
+          <button id="startInfo" type="button" class="hidden">Info</button>
+          <button id="startAscend" type="button" class="hidden">Ascend</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="victoryScreen" class="victory-screen hidden">
+  <div class="victory-panel">
+    <h1>VICTORY</h1>
+    <p>You conquered the final boss.</p>
+    <button id="victoryRestart" type="button">Restart</button>
+  </div>
+</div>
+<div id="victoryTransition" class="victory-transition hidden" aria-hidden="true"></div>
+
+<div id="battlefield">
+  <div id="battlefieldBackgroundLayer" class="battlefield-tile-layer battlefield-tile-layer-bg" aria-hidden="true"></div>
+  <div id="battlefieldForegroundLayer" class="battlefield-tile-layer battlefield-tile-layer-fg" aria-hidden="true"></div>
+  <div id="allyTeam">
+    <div id="playerChar" class="character ally-entity">
+      <div id="playerStatusIcons" class="status-icons"></div>
+      <div id="playerChatBubble" class="chat-bubble hidden"></div>
+      <img id="playerSprite" class="ally-sprite" src="sprites/player/jacob/jacob.png" alt="Jacob">
+      <div id="playerQueuedAction" class="queued-action hidden"></div>
+      <div id="playerSkill" class="skill-feedback"></div>
+    </div>
+    <div id="duoZone" class="character"></div>
+    <div id="helperZone" class="character"></div>
+  </div>
+
+  <div id="enemyZone" class="character">
+    <div id="enemyGroup"></div>
+  </div>
+  <div id="bossHud" class="boss-hud hidden"></div>
+</div>
+
+  <div id="battleHud">
+  <div id="allyCards">
+    <div id="playerCardWrap" class="battle-card-wrap">
+      <div class="battle-card-top">
+        <img id="playerCardArt" class="battle-card-art" src="sprites/player/jacob/jacob_profile.png" alt="Jacob battle card art">
+        <div id="playerCardBonus" class="battle-card-bonus hidden-bonus"></div>
+      </div>
+      <div id="playerCard" class="battle-card player-battle-card">
+        <div id="playerStats" class="battle-card-stats"></div>
+      </div>
+    </div>
+    <div id="duoPlayerCardSlot"></div>
+    <div id="helperCardSlot"></div>
+    <div id="bossCardSlot"></div>
+  </div>
+</div>
+
+<div id="ui">
+  <div id="topUi">
+    <div id="leftUi">
+      <div id="actionsRow">
+        <div id="luckyChargesHud" class="lucky-charges-hud hidden">
+          <div class="lucky-stack-wrap">
+          <div class="lucky-stack">
+            <div id="luckyChargesFill" class="lucky-stack-fill"></div>
+          </div>
+          <img class="shadow-stack-icon hidden" src="sprites/player/kostya/shadow_charge.png" alt="Shadow Charge icon">
+          <img class="lucky-stack-icon" src="sprites/player/patrick/lucky_charge.png" alt="Lucky Charges icon">
+          <span id="luckyChargesNum">0</span>
+        </div>
+      </div>
+        <div id="actionsPanel">
+          <div id="actions"></div>
+        </div>
+      </div>
+    </div>
+    <div id="combatLogContainer">
+      <div id="log"></div>
+    </div>
+  </div>
+  <div id="targetHint" class="target-hint hidden"></div>
+  <div id="chatInputWrap" class="chat-input-wrap hidden">
+    <input id="chatInput" type="text" autocomplete="off" spellcheck="false">
+  </div>
+  <div id="skillCheck" class="hidden">
+    <div id="skillBar">
+      <div id="skillFill"></div>
+      <div id="skillMarkers"></div>
+      <div id="skillWindowRed"></div>
+      <div id="skillWindowYellow"></div>
+      <div id="skillWindow"></div>
+    </div>
+    <div id="skillHint">Hold and release SPACE inside the zone</div>
+  </div>
+</div>
+<div id="actionTooltip"></div>
+<div id="levelCorner">LVL 1</div>
+<button id="debugToggle" class="dbg-btn hidden" type="button">DEBUG</button>
+<div id="debugMenu" class="debug-menu hidden">
+  <button id="dbgKillAll" type="button">Kill All</button>
+  <button id="dbgRefillAll" type="button">Refill Everything</button>
+  <button id="dbgMaxLevelUp" type="button">Upgrade Builder</button>
+  <button id="dbgForceMercyAccept" type="button">Force Mercy: Off</button>
+  <button id="dbgToggleHitboxes" type="button">Hitboxes: Off</button>
+  <button id="dbgKeepCombatLog" type="button">Keep Combat Log: Off</button>
+  <button id="dbgShowStatusTurns" type="button">Status Turns: Off</button>
+  <button id="dbgChangeSpeed" type="button">Change Speed</button>
+  <div id="dbgSpeedPanel" class="debug-speed-panel hidden">
+    <div id="dbgSpeedLabel" class="debug-speed-label">Game Speed: 100%</div>
+    <input id="dbgSpeedSlider" type="range" min="0" max="4" step="1" value="4">
+  </div>
+  <button id="dbgCastStatusToggle" type="button">Cast Status</button>
+  <div id="dbgStatusPanel" class="debug-status-panel hidden">
+    <select id="dbgStatusKey">
+      <option value="absorption">Absorption</option>
+      <option value="decay">Decaying</option>
+      <option value="fire">Fire</option>
+      <option value="poison">Poison</option>
+      <option value="regen">Regeneration</option>
+      <option value="resistance">Resistance</option>
+      <option value="slowness">Slowness</option>
+      <option value="speed">Speed</option>
+      <option value="spRegen">SP Regeneration</option>
+      <option value="strenght">Strength</option>
+      <option value="stunned">Stunned</option>
+      <option value="weakness">Weakness</option>
+    </select>
+    <label class="debug-slider-row" for="dbgStatusPower">
+      <span id="dbgStatusPowerLabel">Power: 1</span>
+      <input id="dbgStatusPower" type="range" min="1" max="10" step="1" value="1">
+    </label>
+    <label class="debug-slider-row" for="dbgStatusTurns">
+      <span id="dbgStatusTurnsLabel">Turns: 1</span>
+      <input id="dbgStatusTurns" type="range" min="1" max="100" step="1" value="1">
+    </label>
+    <button id="dbgCastStatus" class="dbg-danger-btn" type="button">Choose Target</button>
+  </div>
+  <button id="dbgGrantItemToggle" type="button">Grant Item</button>
+  <div id="dbgItemPanel" class="debug-item-panel hidden">
+    <select id="dbgItemKey">
+      <option value="salad">Salad</option>
+      <option value="bomb">Bomb</option>
+      <option value="cherry">Cherry</option>
+      <option value="healingPotion">Healing Potion</option>
+      <option value="slateskinPotion">Slateskin Potion</option>
+    </select>
+    <button id="dbgGrantItem" class="dbg-danger-btn" type="button">Grant Item</button>
+  </div>
+  <button id="dbgTeleportToggle" type="button">Teleport</button>
+  <div id="dbgTeleportPanel" class="debug-teleport-panel hidden">
+    <div id="dbgTeleportLabel" class="debug-speed-label">Teleport: LVL 1</div>
+    <input id="dbgLevelSlider" type="range" min="1" max="50" step="1" value="1">
+    <button id="dbgTeleportConfirm" class="dbg-danger-btn" type="button">Teleport</button>
+  </div>
+</div>
+
+<script type="module" src="js/game.js"></script>
+</body>
+</html>
