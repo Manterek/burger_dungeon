@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Burger Dungeon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" id="app-favicon" type="image/png" href="sprites/indicator/item.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main class="menu-shell" id="main-menu" aria-label="Main menu">
+    <div class="menu-fall-layer" id="menu-fall-layer" aria-hidden="true"></div>
+    <div class="menu-loading-screen menu-loading-screen-hidden" id="menu-loading-screen" aria-live="polite">
+      <div class="menu-loading-stack">
+        <div class="menu-loading-burger" id="menu-loading-burger" aria-hidden="true">
+          <canvas class="menu-loading-burger-canvas" id="menu-loading-burger-canvas" width="128" height="128"></canvas>
+        </div>
+        <div class="menu-loading-label"><span id="menu-loading-label">Descending</span><span class="menu-loading-dots" aria-hidden="true">...</span></div>
+      </div>
+    </div>
+    <div class="menu-stage">
+      <div class="menu-brand">
+        <div class="menu-title-burger" aria-hidden="true"></div>
+        <div class="menu-title" id="menu-title" aria-label="Burger Dungeon">
+          <span id="menu-title-line-1">BURGER</span>
+          <span id="menu-title-line-2">DUNGEON</span>
+        </div>
+      </div>
+
+      <div class="menu-actions">
+        <button type="button" class="menu-button" id="start-game-button" aria-label="Start Run">Start Run</button>
+        <button type="button" class="menu-button" id="join-run-button" aria-label="Join Run">Join Run</button>
+        <button type="button" class="menu-button" id="open-settings-button" aria-label="Settings">Settings</button>
+      </div>
+
+      <div class="menu-settings menu-settings-hidden" id="character-select-panel" aria-label="Character setup panel">
+        <div class="menu-run-setup-shell" id="menu-run-setup-shell">
+          <aside class="menu-settings-panel menu-lobby-panel menu-lobby-panel-hidden" id="hosted-run-panel" aria-label="Hosted run panel">
+            <h2 class="menu-settings-title" id="hosted-run-title">Hosted Run</h2>
+            <p class="menu-info-line">
+              <span class="menu-info-label" id="hosted-run-code-label">Room Code</span>
+              <span class="menu-info-value menu-room-code" id="hosted-run-code-value">------</span>
+            </p>
+            <p class="menu-info-line">
+              <span class="menu-info-label" id="hosted-run-players-label">Players</span>
+              <span class="menu-info-value" id="hosted-run-players-value">1/1</span>
+            </p>
+            <p class="menu-info-line">
+              <span class="menu-info-label" id="hosted-run-turn-label">Character Turn</span>
+              <span class="menu-info-value" id="hosted-run-turn-value">Solo run</span>
+            </p>
+            <div class="menu-lobby-player-list" id="hosted-run-player-list" aria-live="polite"></div>
+            <p class="menu-status-text" id="hosted-run-status-text" aria-live="polite"></p>
+            <button type="button" class="menu-button menu-hosted-run-resolve-button" id="resolve-party-button" aria-label="Resolve Party">Resolve Party</button>
+          </aside>
+
+          <div class="menu-settings-panel menu-run-setup-panel">
+            <button type="button" class="menu-panel-close-button" id="character-select-back-button" aria-label="Close">X</button>
+            <h2 class="menu-settings-title" id="character-select-title">Run Setup</h2>
+
+            <div class="menu-choice-stack">
+              <div class="menu-choice-row">
+                <span class="menu-choice-label" id="difficulty-label">Difficulty</span>
+                <div class="menu-toggle-group menu-toggle-group-two" id="difficulty-toggle-group" role="group" aria-label="Difficulty">
+                  <button type="button" class="menu-option-button" data-setting-group="difficulty" data-setting-value="casual">Casual</button>
+                  <button type="button" class="menu-option-button" data-setting-group="difficulty" data-setting-value="hardmode">Hardmode</button>
+                </div>
+              </div>
+
+              <div class="menu-choice-row">
+                <span class="menu-choice-label" id="party-size-label">Party Size</span>
+                <div class="menu-toggle-group menu-toggle-group-three" id="party-size-toggle-group" role="group" aria-label="Party size">
+                  <button type="button" class="menu-option-button" data-setting-group="partySize" data-setting-value="solo">Solo</button>
+                  <button type="button" class="menu-option-button" data-setting-group="partySize" data-setting-value="duo">Duo</button>
+                  <button type="button" class="menu-option-button" data-setting-group="partySize" data-setting-value="trio">Trio</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="menu-character-block" data-character-layout="roster">
+              <div class="menu-character-showcase">
+                <div class="menu-character-carousel" role="group" aria-label="Character selector">
+                  <button type="button" class="menu-character-arrow" id="character-prev-button" aria-label="Previous character">&lt;</button>
+                  <button type="button" class="menu-character-preview" id="character-preview-card" aria-live="polite">
+                    <span class="menu-character-preview-lock" id="character-preview-lock" hidden>Taken</span>
+                    <span class="menu-character-preview-rating" id="character-preview-rating" aria-label="Skill ceiling rating">
+                      <span class="menu-character-preview-star"></span>
+                      <span class="menu-character-preview-star"></span>
+                      <span class="menu-character-preview-star"></span>
+                      <span class="menu-character-preview-star"></span>
+                      <span class="menu-character-preview-star"></span>
+                    </span>
+                    <span class="menu-character-preview-portrait-frame">
+                      <img class="menu-character-preview-portrait" id="character-preview-portrait" src="sprites/player/patrick/patrick_profile.png" alt="">
+                    </span>
+                    <span class="menu-character-preview-copy">
+                      <span class="menu-character-preview-heading">
+                        <span class="menu-character-preview-name" id="character-preview-name">Patrick</span>
+                        <span class="menu-character-preview-class" id="character-preview-class">Gambler</span>
+                      </span>
+                      <span class="menu-character-preview-playstyle" id="character-preview-playstyle">Coin-flipping trickster who builds Lucky Charges and cashes them in for utility and burst.</span>
+                      <span class="menu-character-preview-stats" id="character-preview-stats">HP 30 / SP 0</span>
+                    </span>
+                  </button>
+                  <button type="button" class="menu-character-arrow" id="character-next-button" aria-label="Next character">&gt;</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="menu-dialog-actions">
+              <button type="button" class="menu-button menu-dialog-button menu-dialog-button-primary" id="character-select-confirm-button" aria-label="Descend">Descend</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-settings menu-settings-hidden" id="join-run-panel" aria-label="Join run panel">
+        <div class="menu-settings-panel">
+          <button type="button" class="menu-panel-close-button" id="join-run-back-button" aria-label="Close">X</button>
+          <h2 class="menu-settings-title" id="join-run-title">Join Run</h2>
+          <label class="menu-text-field" for="join-run-code-input">
+            <span class="menu-select-label" id="join-run-code-label">Room Code</span>
+          </label>
+          <input
+            type="text"
+            id="join-run-code-input"
+            class="menu-text-input"
+            inputmode="numeric"
+            maxlength="6"
+            autocomplete="one-time-code"
+            aria-label="Room code"
+            placeholder="123456"
+          >
+          <p class="menu-status-text" id="join-run-status-text" aria-live="polite"></p>
+          <div class="menu-dialog-actions">
+            <button type="button" class="menu-button menu-dialog-button menu-dialog-button-info" id="join-run-search-button" aria-label="Find">Find</button>
+            <button type="button" class="menu-button menu-dialog-button menu-dialog-button-primary menu-conditional-button" id="join-run-confirm-button" aria-label="Join">Join</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-settings menu-settings-hidden" id="menu-settings" aria-label="Settings panel">
+        <div class="menu-settings-panel">
+          <button type="button" class="menu-panel-close-button" id="close-settings-button" aria-label="Close">X</button>
+          <h2 class="menu-settings-title" id="settings-title">Settings</h2>
+          <label class="menu-slider-field" for="music-volume-slider">
+            <span class="menu-slider-label" id="music-volume-label">Music Volume</span>
+            <span class="menu-slider-value" id="music-volume-value">50%</span>
+          </label>
+          <input
+            type="range"
+            id="music-volume-slider"
+            class="menu-slider"
+            min="0"
+            max="100"
+            step="1"
+            value="50"
+            aria-label="Music volume"
+          >
+          <label class="menu-slider-field" for="sfx-volume-slider">
+            <span class="menu-slider-label" id="sfx-volume-label">SFX Volume</span>
+            <span class="menu-slider-value" id="sfx-volume-value">50%</span>
+          </label>
+          <input
+            type="range"
+            id="sfx-volume-slider"
+            class="menu-slider"
+            min="10"
+            max="100"
+            step="1"
+            value="50"
+            aria-label="SFX volume"
+          >
+          <label class="menu-select-field" for="language-select">
+            <span class="menu-select-label" id="language-label">Language</span>
+          </label>
+          <select id="language-select" class="menu-select" aria-label="Language">
+            <option value="en">English</option>
+            <option value="pl">Polski</option>
+          </select>
+          <div class="menu-toggle-field" id="hp-saturation-field">
+            <span class="menu-toggle-label" id="hp-saturation-label">Screen Desaturation</span>
+            <button type="button" class="menu-toggle-button" id="hp-saturation-button" aria-pressed="true">On</button>
+          </div>
+          <div class="menu-toggle-field menu-dev-field menu-dev-field-hidden" id="dev-mode-field">
+            <span class="menu-toggle-label" id="dev-mode-label">Developer Mode</span>
+            <button type="button" class="menu-toggle-button" id="dev-mode-button" aria-pressed="false">Off</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <main class="game-shell game-shell-hidden" id="game-shell">
+    <canvas
+      id="dungeon-canvas"
+      class="game-canvas"
+      width="512"
+      height="288"
+      aria-label="Burger Dungeon dungeon scene"
+    ></canvas>
+  </main>
+
+  <script type="module" src="main/main.js"></script>
+</body>
+</html>
